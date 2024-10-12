@@ -1,0 +1,13 @@
+### Fetch all blogs
+GET http://localhost:3001/api/blogs
+
+### Create a new blog
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+  "title": "My Second Blog",
+  "author": "John Smith",
+  "url": "http://2ndexample.com/my-first-blog",
+  "likes": 15
+}
