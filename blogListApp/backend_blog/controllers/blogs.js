@@ -1,16 +1,28 @@
 //controllers/blogs.js
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
+const User = require('../models/user')
 
+
+// // GET all blogs
+// blogsRouter.get('/', async (request, response, next) => {
+//   try {
+//     const blogs = await Blog.find({});
+//     response.json(blogs);
+//   } catch (error) {
+//     next(error); // Pass the error to the error handler
+//   }
+// });
 // GET all blogs
 blogsRouter.get('/', async (request, response, next) => {
   try {
-    const blogs = await Blog.find({});
-    response.json(blogs);
+      const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 }); // Populate user information
+      response.json(blogs);
   } catch (error) {
-    next(error); // Pass the error to the error handler
+      next(error);
   }
 });
+
 
 // GET a single blog by ID
 blogsRouter.get('/:id', async (request, response, next) => {
@@ -28,23 +40,31 @@ blogsRouter.get('/:id', async (request, response, next) => {
 
 // POST a new blog
 blogsRouter.post('/', async (request, response, next) => {
-  const { title, author, url, likes } = request.body;
+  const { title, author, url, likes, user: userId } = request.body;
 
   if (!title || !url) {
-    return response.status(400).json({ error: 'title or url missing' });
+      return response.status(400).json({ error: 'title or url missing' });
   }
 
-  const blog = new Blog({
-    title,
-    author,
-    url,
-    likes: likes || 0, // Default likes to 0 if it's missing
-  });
   try {
-    const savedBlog = await blog.save();
-    response.status(201).json(savedBlog);
+      const user = await User.findById(userId); // Fetch a user
+      const blog = new Blog({
+          title,
+          author,
+          url,
+          likes: likes || 0,
+          user: user.id,
+      });
+
+      const savedBlog = await blog.save();
+
+      // Use concat to add the new blog ID to the user's blogs array
+      user.blogs = user.blogs.concat(savedBlog._id); 
+      await user.save();
+
+      response.status(201).json(savedBlog);
   } catch (error) {
-    next(error);
+      next(error);
   }
 });
 

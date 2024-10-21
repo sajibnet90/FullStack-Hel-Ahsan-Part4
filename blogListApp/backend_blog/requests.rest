@@ -1,13 +1,61 @@
 ### Fetch all blogs
 GET http://localhost:3001/api/blogs
+### Fetch by id 
+GET http://localhost:3001/api/blogs/67163745ff0ac40a2dbc326f
 
 ### Create a new blog
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-  "title": "My Second Blog",
-  "author": "John Smith",
+  "title": "Ebraam first Blog",
+  "author": "Ahsan Smith",
   "url": "http://2ndexample.com/my-first-blog",
-  "likes": 15
+  "likes": 15,
+  "user":"671609514ce1686f2d410909"
+}
+
+### delete by id 
+DELETE http://localhost:3001/api/blogs/671636ecff0ac40a2dbc3269
+
+### update by id 
+PUT http://localhost:3001/api/blogs/{id}
+
+
+
+//------------------------------------------
+////------------Users endpoints-----------
+### Fetch all Users
+GET http://localhost:3001/api/users
+
+###
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+  "username": "ebraam",
+  "name": "ELE Nazmul",
+  "password": "ahsan"
+}
+
+# {
+#     "username": "root",
+#     "name": "Superuser",
+#     "password": "salainen"
+# }
+// ----GET by id-------
+###
+GET http://localhost:3001/api/users/671609514ce1686f2d410909
+
+###
+DELETE http://localhost:3001/api/users/
+
+
+//---------Login Route-----------
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username": "saj",
+    "password": "ahsan"
 }

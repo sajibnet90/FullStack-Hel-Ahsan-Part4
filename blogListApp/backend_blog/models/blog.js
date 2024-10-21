@@ -4,7 +4,11 @@ const blogSchema = new mongoose.Schema({
     title: String,
     author: String,
     url: String,
-    likes: Number
+    likes: Number,
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+  },
   })
 // removing _id and __v from mongo database when retriving data
 blogSchema.set('toJSON', {

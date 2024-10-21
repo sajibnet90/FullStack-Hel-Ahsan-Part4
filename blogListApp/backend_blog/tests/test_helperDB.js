@@ -1,5 +1,7 @@
 //tests/test_helperDB.js
 const Blog = require('../models/blog')
+const User = require('../models/user') //
+
 const initialBlogs = [
   {
     title: 'First Blog',
@@ -15,9 +17,22 @@ const initialBlogs = [
   },
 ];
 
+const initialUsers = [
+  {
+    username: 'validUser',
+    name: 'Valid User',
+    password: 'validpassword',
+  }
+];
+
 const blogsInDb = async () => {
   const blogs = await Blog.find({})
   return blogs.map(blog => blog.toJSON()) //map returns an Array
 }
 
-module.exports = { initialBlogs, blogsInDb  };
+const usersInDb = async () => {
+  const users = await User.find({});
+  return users.map(user => user.toJSON());
+};
+
+module.exports = { initialBlogs, blogsInDb, initialUsers, usersInDb  };
