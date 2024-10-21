@@ -36,6 +36,11 @@ blogsRouter.post('/', middleware.userExtractor,async (request, response, next) =
   try {
    // The user is extracted from the token and available in request.user
    const user = request.user;
+
+   // Validate required fields
+   if (!title || !url) {
+    return response.status(400).json({ error: 'Title and URL are required' });
+  }
     // Create and save the new blog
     const blog = new Blog({
       title,
@@ -62,6 +67,7 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request, response, n
     const user = request.user;  // The user is extracted from the token and available in request.user
     // Use findByIdAndDelete to remove the blog directly
     const blog = await Blog.findByIdAndDelete(request.params.id);
+
     if (!blog) {
         return response.status(404).json({ error: 'blog not found' });
     }
@@ -70,37 +76,35 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request, response, n
     if (blog.user.toString() !== user.id.toString()) {
         return response.status(403).json({ error: 'only the creator can delete this blog' });
     }
-
     // If the blog was deleted successfully, also update the user's blogs array
     user.blogs = user.blogs.filter(blogId => blogId.toString() !== request.params.id);
     await user.save();
+    
     response.status(204).end(); // Successfully deleted, no content to return
 } catch (error) {
     next(error);
 }
 });
 
+// --------PUT to update a blog by ID----------
+blogsRouter.put('/:id', async (request, response, next) => {
+  const { id } = request.params;
+  const { likes } = request.body;
+
+  try {
+    // Update the likes field of the blog
+    const updatedBlog = await Blog.findByIdAndUpdate(id,{ likes },
+    { new: true, runValidators: true, context: 'query' });
+
+    if (updatedBlog) {
+      response.status(200).json(updatedBlog);
+    } else {
+      return response.status(404).json({ error: 'Blog not found' });
+    }
+  } catch (error) {
+    next(error); // Pass the error to the error handler
+  }
+});
 
 
 module.exports = blogsRouter;
-
-
-// // --------PUT to update a blog by ID----------
-// blogsRouter.put('/:id', async (request, response, next) => {
-//   const { id } = request.params;
-//   const { likes } = request.body;
-
-//   try {
-//     // Update the likes field of the blog
-//     const updatedBlog = await Blog.findByIdAndUpdate(id,{ likes },
-//     { new: true, runValidators: true, context: 'query' });
-
-//     if (updatedBlog) {
-//       response.status(200).json(updatedBlog);
-//     } else {
-//       return response.status(404).json({ error: 'Blog not found' });
-//     }
-//   } catch (error) {
-//     next(error); // Pass the error to the error handler
-//   }
-// });
