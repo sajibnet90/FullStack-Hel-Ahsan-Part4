@@ -1,34 +1,59 @@
 ### Fetch all blogs
 GET http://localhost:3001/api/blogs
-### Fetch by id 
-GET http://localhost:3001/api/blogs/67163745ff0ac40a2dbc326f
+###
 
-### Create a new blog
+### Fetch blog by ID
+GET http://localhost:3001/api/blogs/67163ab2b3776fb95a82d470
+###
+
+# ### Create a new blog (without token)
+# POST http://localhost:3001/api/blogs
+# Content-Type: application/json
+
+# {
+#   "title": "Ebraam first Blog",
+#   "author": "Ahsan Smith",
+#   "url": "http://2ndexample.com/my-first-blog",
+#   "likes": 15,
+#   "user":"671609514ce1686f2d410909"
+# }
+
+### Create a new blog (with token)
 POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhaiIsImlkIjoiNjcxNWZmMzZjNTU2NGYzOTlmNWExNTA4IiwiaWF0IjoxNzI5NTI4ODcxLCJleHAiOjE3Mjk1MzI0NzF9.kvPeyraVo2dzRvffw5O0JQTALDclte22erp4UU6jYHI
+
+{
+  "title": "SAj 2nndd blog",
+  "author": "Saj New",
+  "url": "http://example.com/blog",
+  "likes": 10
+}
+
+# ### Delete blog by ID (without token)
+# DELETE http://localhost:3001/api/blogs/67165ade85a163516e6741d2
+
+
+### Delete blog by ID (with token)
+DELETE http://localhost:3001/api/blogs/671685ddf0c06f87d7e0a329
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhaiIsImlkIjoiNjcxNWZmMzZjNTU2NGYzOTlmNWExNTA4IiwiaWF0IjoxNzI5NTI4ODcxLCJleHAiOjE3Mjk1MzI0NzF9.kvPeyraVo2dzRvffw5O0JQTALDclte22erp4UU6jYHI
+
+
+### Update blog by ID
+PUT http://localhost:3001/api/blogs/{id}
 Content-Type: application/json
 
 {
-  "title": "Ebraam first Blog",
-  "author": "Ahsan Smith",
-  "url": "http://2ndexample.com/my-first-blog",
-  "likes": 15,
-  "user":"671609514ce1686f2d410909"
+  "likes": 20
 }
+###
 
-### delete by id 
-DELETE http://localhost:3001/api/blogs/671636ecff0ac40a2dbc3269
-
-### update by id 
-PUT http://localhost:3001/api/blogs/{id}
-
-
-
-//------------------------------------------
-////------------Users endpoints-----------
-### Fetch all Users
+### --------------Fetch all Users---------------
 GET http://localhost:3001/api/users
 
 ###
+
+### Create a new user
 POST http://localhost:3001/api/users
 Content-Type: application/json
 
@@ -37,25 +62,22 @@ Content-Type: application/json
   "name": "ELE Nazmul",
   "password": "ahsan"
 }
-
-# {
-#     "username": "root",
-#     "name": "Superuser",
-#     "password": "salainen"
-# }
-// ----GET by id-------
 ###
+
+### -----------Fetch user by ID-------------------
 GET http://localhost:3001/api/users/671609514ce1686f2d410909
-
 ###
-DELETE http://localhost:3001/api/users/
 
+### Delete user by id
+DELETE http://localhost:3001/api/users/{id}
+###
 
-//---------Login Route-----------
+### Login Route
 POST http://localhost:3001/api/login
 Content-Type: application/json
 
 {
-    "username": "saj",
-    "password": "ahsan"
+  "username": "saj",
+  "password": "ahsan"
 }
+###
